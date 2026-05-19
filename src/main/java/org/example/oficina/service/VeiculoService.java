@@ -17,9 +17,7 @@ public class VeiculoService {
 
     @Autowired
     private VeiculoRepository veiculoRepository;
-
-    @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     public List<VeiculoResponseDTO> listarTodos() {
         return veiculoRepository.findAll()
@@ -36,7 +34,7 @@ public class VeiculoService {
     }
 
     public VeiculoResponseDTO cadastrar(VeiculoRequestDTO dto) {
-        Cliente cliente = clienteRepository.findById(dto.clienteId())
+        Cliente cliente = clienteService.buscarEntidade(dto.clienteId());
         //TODO: adicionar a exception
 
         Veiculo veiculo = new Veiculo();
@@ -53,9 +51,10 @@ public class VeiculoService {
 
     public VeiculoResponseDTO atualizar(Long idVeiculo, VeiculoRequestDTO dto) {
         Veiculo veiculo = veiculoRepository.findById(idVeiculo)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Veículo não encontrado"));
         //TODO: adicionar a exception
 
-        Cliente cliente = clienteRepository.findById(dto.clienteId())
+        Cliente cliente = clienteService.buscarEntidade(dto.clienteId());
         //TODO: adicionar a exception
 
         veiculo.setPlaca(dto.placa());
@@ -70,6 +69,8 @@ public class VeiculoService {
 
     public void deletar(Long idVeiculo) {
         Veiculo veiculo = veiculoRepository.findById(idVeiculo)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Veículo não encontrado"));
+        veiculoRepository.delete(veiculo);
         //TODO: adicionar a exception
 
         //TODO: chamar método de deletar do repository
@@ -90,9 +91,17 @@ public class VeiculoService {
     }
 
     private VeiculoResponseDTO converterParaResponse(Veiculo veiculo) {
+        Cliente cliente = clienteService.buscarEntidade(veiculo.getCliente().getIdCliente());
         return new VeiculoResponseDTO(
                 //TODO: fazer os gets de "veiculo" conforme o que deve aparecer no response
-
+                veiculo.getIdVeiculo(),
+                veiculo.getPlaca(),
+                veiculo.getModelo(),
+                veiculo.getAno(),
+                veiculo.getCliente().getIdCliente(),
+                veiculo.getCliente().getNome(),
+                veiculo.getCliente().getTelefone(),
+                veiculo.getCliente().getEmail()
         );
     }
 }

@@ -1,7 +1,15 @@
 package org.example.oficina.model;
 
-public class OrdemServico {
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Entity
+@Getter
+@Setter
+public class OrdemServico {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idOrdemServico;
 
     private String descricaoProblema;
@@ -11,5 +19,9 @@ public class OrdemServico {
     private Double valorServico;
 
     //TODO: transformar em entidade e colocar relacionamento
+    @ManyToOne
+    @JoinColumn(name = "veiculoId")
+    private Veiculo veiculo;
 
+    public OrdemServico(){}
 }

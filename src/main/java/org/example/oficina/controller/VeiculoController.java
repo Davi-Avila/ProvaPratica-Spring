@@ -2,6 +2,9 @@ package org.example.oficina.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.oficina.dto.VeiculoRequestDTO;
+import org.example.oficina.dto.VeiculoResponseDTO;
+import org.example.oficina.service.VeiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
