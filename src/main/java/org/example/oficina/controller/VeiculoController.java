@@ -2,6 +2,7 @@ package org.example.oficina.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.example.oficina.dto.VeiculoRequestDTO;
 import org.example.oficina.dto.VeiculoResponseDTO;
 import org.example.oficina.service.VeiculoService;
@@ -32,14 +33,14 @@ public class VeiculoController {
 
     @Operation(summary = "Cadastra um novo veículo")
     @PostMapping
-    public VeiculoResponseDTO cadastrar(@RequestBody VeiculoRequestDTO dto) {
+    public VeiculoResponseDTO cadastrar(@Valid @RequestBody VeiculoRequestDTO dto) {
         //TODO: usar a validação de dados
         return service.cadastrar(dto);
     }
 
     @Operation(summary = "Atualiza um veículo existente")
     @PutMapping("/{idVeiculo}")
-    public VeiculoResponseDTO atualizar(@PathVariable Long idVeiculo, @RequestBody VeiculoRequestDTO dto) {
+    public VeiculoResponseDTO atualizar(@PathVariable Long idVeiculo, @Valid @RequestBody VeiculoRequestDTO dto) {
         return service.atualizar(idVeiculo, dto);
     }
 
@@ -57,7 +58,7 @@ public class VeiculoController {
     }
 
     @Operation(summary = "Lista veículos de um determinado cliente")
-    @GetMapping("/cliente")
+    @GetMapping("/cliente/{idCliente}")
     public List<VeiculoResponseDTO> listarPorCliente(@PathVariable Long idCliente) {
         //TODO: revisar para garantir que recebe o id para buscar
         return service.listarPorCliente(idCliente);

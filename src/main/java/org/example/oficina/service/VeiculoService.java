@@ -17,6 +17,7 @@ public class VeiculoService {
 
     @Autowired
     private VeiculoRepository veiculoRepository;
+    @Autowired
     private ClienteService clienteService;
 
     public List<VeiculoResponseDTO> listarTodos() {
@@ -90,8 +91,13 @@ public class VeiculoService {
                 .toList();
     }
 
+    public Veiculo buscarEntidade(Long idVeiculo){
+        Veiculo veiculo = veiculoRepository.findById(idVeiculo)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Veículo não encontrado"));
+        return veiculo;
+    }
+
     private VeiculoResponseDTO converterParaResponse(Veiculo veiculo) {
-        Cliente cliente = clienteService.buscarEntidade(veiculo.getCliente().getIdCliente());
         return new VeiculoResponseDTO(
                 //TODO: fazer os gets de "veiculo" conforme o que deve aparecer no response
                 veiculo.getIdVeiculo(),
